@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.onestopsolutions.master.InputDataActivity">
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:gravity="top"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/btn_cancel_text"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/btn_save"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/btn_save_text"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/container_duration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <ImageView
+                    android:id="@+id/icon_duration"
+                    android:layout_width="@dimen/icon_size"
+                    android:layout_height="@dimen/icon_size"
+                    android:layout_margin="@dimen/icon_margin"
+                    android:layout_marginTop="@dimen/icon_padding"
+                    android:src="@drawable/ic_calender" />
+
+                <TextView
+                    android:id="@+id/title_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/icon_margin"
+                    android:layout_toEndOf="@id/icon_duration"
+                    android:gravity="center_vertical"
+                    android:text="@string/text_input_duration"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                <RelativeLayout
+                    android:id="@+id/container_start_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@id/title_duration"
+                    android:layout_alignStart="@id/title_duration"
+                    android:layout_below="@id/title_duration"
+                    android:layout_marginTop="@dimen/icon_margin">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:gravity="center_vertical"
+                        android:text="@string/text_input_start_date"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    <TextView
+                        android:id="@+id/duration_start_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:gravity="center_vertical"
+                        android:text="01-04-2017"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/container_end_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@id/container_start_date"
+                    android:layout_alignStart="@id/container_start_date"
+                    android:layout_below="@id/container_start_date"
+                    android:layout_marginTop="@dimen/margin_summary_text">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:gravity="center_vertical"
+                        android:text="@string/text_input_end_date"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    <TextView
+                        android:id="@+id/duration_end_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:gravity="center_vertical"
+                        android:text="31-03-2018"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:layout_marginEnd="@dimen/divider_margin_end"
+                android:layout_marginStart="@dimen/divider_margin_start"
+                android:background="@android:color/darker_gray" />
+
+            <RelativeLayout
+                android:id="@+id/container_graph"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <ImageView
+                    android:id="@+id/icon_graph"
+                    android:layout_width="@dimen/icon_size"
+                    android:layout_height="@dimen/icon_size"
+                    android:layout_margin="@dimen/icon_margin"
+                    android:layout_marginTop="@dimen/icon_padding"
+                    android:padding="@dimen/icon_padding"
+                    android:src="@drawable/ic_graph" />
+
+                <TextView
+                    android:id="@+id/title_graph"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/icon_margin"
+                    android:layout_toEndOf="@id/icon_graph"
+                    android:gravity="center_vertical"
+                    android:text="@string/text_graph_view"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                <TextView
+                    android:id="@+id/graph_summary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@id/title_graph"
+                    android:layout_alignStart="@id/title_graph"
+                    android:layout_below="@id/title_graph"
+                    android:layout_marginStart="@dimen/margin_summary_text"
+                    android:text="Monthly"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/colorPrimary" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:layout_marginEnd="@dimen/divider_margin_end"
+                android:layout_marginStart="@dimen/divider_margin_start"
+                android:background="@android:color/darker_gray" />
+
+            <RelativeLayout
+                android:id="@+id/container_subject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <ImageView
+                    android:id="@+id/icon_subject"
+                    android:layout_width="@dimen/icon_size"
+                    android:layout_height="@dimen/icon_size"
+                    android:layout_margin="@dimen/icon_margin"
+                    android:layout_marginTop="@dimen/icon_padding"
+                    android:src="@drawable/ic_subject" />
+
+                <TextView
+                    android:id="@+id/title_subject"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/icon_margin"
+                    android:layout_toEndOf="@id/icon_subject"
+                    android:gravity="center_vertical"
+                    android:text="@string/text_subject_title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                <TextView
+                    android:id="@+id/subject_summary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@id/title_subject"
+                    android:layout_alignStart="@id/title_subject"
+                    android:layout_below="@id/title_subject"
+                    android:layout_marginStart="@dimen/margin_summary_text"
+                    android:text="English-1st"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/colorPrimary" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:layout_marginEnd="@dimen/divider_margin_end"
+                android:layout_marginStart="@dimen/divider_margin_start"
+                android:background="@android:color/darker_gray" />
+
+            <RelativeLayout
+                android:id="@+id/container_bookType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <ImageView
+                    android:id="@+id/icon_bookType"
+                    android:layout_width="@dimen/icon_size"
+                    android:layout_height="@dimen/icon_size"
+                    android:layout_margin="@dimen/icon_margin"
+                    android:layout_marginTop="@dimen/icon_padding"
+                    android:padding="@dimen/icon_padding"
+                    android:src="@drawable/ic_book_type" />
+
+                <TextView
+                    android:id="@+id/title_bookType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/icon_margin"
+                    android:layout_toEndOf="@id/icon_bookType"
+                    android:gravity="center_vertical"
+                    android:text="@string/text_book_type_title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                <TextView
+                    android:id="@+id/bookType_summary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@id/title_bookType"
+                    android:layout_alignStart="@id/title_bookType"
+                    android:layout_below="@id/title_bookType"
+                    android:layout_marginStart="@dimen/margin_summary_text"
+                    android:text="Complete Book"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/colorPrimary" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
