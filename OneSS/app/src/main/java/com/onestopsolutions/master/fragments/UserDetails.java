@@ -3,9 +3,11 @@ package com.onestopsolutions.master.fragments;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,8 +18,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.onestopsolutions.master.MainActivity;
 import com.onestopsolutions.master.R;
 import com.onestopsolutions.master.bean.Order;
+import com.onestopsolutions.master.frameworks.IToolBarNavigation;
 import com.onestopsolutions.master.frameworks.retrofit.ResponseResolver;
 import com.onestopsolutions.master.frameworks.retrofit.RestError;
 import com.onestopsolutions.master.frameworks.retrofit.WebServicesWrapper;
@@ -35,6 +39,7 @@ public class UserDetails extends Fragment {
     private TextView mUserName, mLastModified, mBookName, mBookType, mOrderId, mOrderStatus;
     private final String orderStatus[] = {"Pending", "Complete", "Canceled"};
     private ProgressBar mProgressView;
+    private IToolBarNavigation mToolbarNav;
 
     public UserDetails() {
     }
@@ -53,8 +58,6 @@ public class UserDetails extends Fragment {
         if (getArguments() != null) {
             mUserId = getArguments().getString(ARG_PARAM1);
         }
-        getActivity().setTitle("All Users");
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -71,6 +74,13 @@ public class UserDetails extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof IToolBarNavigation)
+            mToolbarNav = (IToolBarNavigation) context;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -82,6 +92,7 @@ public class UserDetails extends Fragment {
         mOrderId = view.findViewById(R.id.card_order_id);
         mOrderStatus = view.findViewById(R.id.card_order_status);
         mProgressView = view.findViewById(R.id.loading_progress);
+
         return view;
     }
 
@@ -94,8 +105,15 @@ public class UserDetails extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        getActivity().setTitle("User Details");
+        mToolbarNav.addBackArrow();
         showProgress(true);
         loadUserInfo();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
     private void loadUserInfo() {
@@ -104,7 +122,7 @@ public class UserDetails extends Fragment {
             public void onSuccess(List<Order> orders, Response response) {
                 if (orders.size() > 0) {
                     Order order = orders.get(0);
-                    mUserName.setText(orders.get(0).getUserName());
+                    mUserName.setText(orders.get(0).getUserID());
                     mLastModified.setText(order.getOrderDate());
                     mBookName.setText(order.getBookName());
                     mBookType.setText(order.getBookType());
@@ -120,6 +138,7 @@ public class UserDetails extends Fragment {
             }
         });
     }
+
 
     private void showProgress(final boolean show) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {

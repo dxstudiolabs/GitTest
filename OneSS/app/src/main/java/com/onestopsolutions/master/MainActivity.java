@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.onestopsolutions.master.bean.GrossIncome;
@@ -28,6 +29,7 @@ import com.onestopsolutions.master.fragments.HomeFragment;
 import com.onestopsolutions.master.fragments.InputDataFragment;
 import com.onestopsolutions.master.fragments.UserDetails;
 import com.onestopsolutions.master.fragments.UserList;
+import com.onestopsolutions.master.frameworks.IToolBarNavigation;
 import com.onestopsolutions.master.frameworks.appsession.AppBaseApplication;
 import com.onestopsolutions.master.frameworks.retrofit.ResponseResolver;
 import com.onestopsolutions.master.frameworks.retrofit.RestError;
@@ -39,9 +41,10 @@ import java.util.List;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnFragmentInteractionListener, UserList.onUserClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnFragmentInteractionListener, UserList.onUserClickListener, IToolBarNavigation {
     // Fragment mHomeFragment = null;
     TabLayout mTabLayout = null;
+    ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,21 +52,23 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        setUserDetails(navigationView.getHeaderView(0));
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
-
-
         Fragment mHomeFragment = HomeFragment.newInstance(mTabLayout);
-        loadFragment(mHomeFragment, "HomeFragment");
+        loadFragment(mHomeFragment, "HomeFragment", false);
+
+    }
+
+    private void setUserDetails(View navView) {
+        ((TextView) navView.findViewById(R.id.name)).setText(AppBaseApplication.getApplication().getSession().getUserId());
+        ((TextView) navView.findViewById(R.id.email)).setText(AppBaseApplication.getApplication().getSession().getRole());
     }
 
     @Override
@@ -74,6 +79,10 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+    public ActionBarDrawerToggle getActionBarToggle() {
+        return toggle;
     }
 
     @Override
@@ -99,10 +108,10 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.nav_home) {
-            loadFragment(HomeFragment.newInstance(mTabLayout), "HomeFragment");
+            loadFragment(HomeFragment.newInstance(mTabLayout), "HomeFragment", false);
         } else if (id == R.id.nav_account) {
         } else if (id == R.id.nav_user_details) {
-            loadFragment(new UserList(), "UserList");
+            loadFragment(new UserList(), "UserList", true);
         } else if (id == R.id.nav_terms) {
         } else if (id == R.id.nav_help_feedback) {
         } else if (id == R.id.nav_about) {
@@ -120,11 +129,14 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void loadFragment(Fragment fragment, String tag) {
+    private void loadFragment(Fragment fragment, String tag, boolean addTobackstack) {
         mTabLayout.setVisibility(View.GONE);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment, tag);
+        if (addTobackstack) {
+            fragmentTransaction.addToBackStack(tag);
+        }
         fragmentTransaction.commit();
     }
 
@@ -137,5 +149,24 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.frameLayout, userDetails, "UserDetails");
         fragmentTransaction.addToBackStack("UserDetails");
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void addBackArrow() {
+        toggle.setDrawerIndicatorEnabled(false);
+        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportFragmentManager().popBackStackImmediate();
+            }
+        });
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public void removeBackArow() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        toggle.setDrawerIndicatorEnabled(true);
+        toggle.setToolbarNavigationClickListener(null);
     }
 }

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.onestopsolutions.master.R;
+import com.onestopsolutions.master.frameworks.IToolBarNavigation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ public class HomeFragment extends Fragment {
     private ViewPager mViewPager;
     private OnFragmentInteractionListener mListener;
     ViewPagerAdapter mAdapter;
+    private IToolBarNavigation mToolNav;
 
     public HomeFragment() {
     }
@@ -56,11 +58,7 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         setupViewPager();
-        getActivity().setTitle(R.string.title_home_fragment);
     }
 
     @Override
@@ -85,7 +83,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
+        getActivity().setTitle(R.string.title_home_fragment);
+        mToolNav.removeBackArow();
         mAdapter.notifyDataSetChanged();
     }
 
@@ -95,9 +94,9 @@ public class HomeFragment extends Fragment {
 
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+        }
+        if (context instanceof IToolBarNavigation) {
+            mToolNav = (IToolBarNavigation) context;
         }
     }
 

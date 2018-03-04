@@ -8,6 +8,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,8 +21,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.onestopsolutions.master.MainActivity;
 import com.onestopsolutions.master.R;
 import com.onestopsolutions.master.bean.User;
+import com.onestopsolutions.master.frameworks.IToolBarNavigation;
 import com.onestopsolutions.master.frameworks.retrofit.ResponseResolver;
 import com.onestopsolutions.master.frameworks.retrofit.RestError;
 import com.onestopsolutions.master.frameworks.retrofit.WebServices;
@@ -49,6 +53,7 @@ public class UserList extends Fragment {
     private UserListAdapter mAdapter;
     private ArrayList<User> mUserList;
     private ProgressBar mProgressView;
+    private IToolBarNavigation mToolBarNav;
 
     public UserList() {
 
@@ -61,6 +66,8 @@ public class UserList extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
@@ -88,6 +95,8 @@ public class UserList extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        getActivity().setTitle("All Users");
+        mToolBarNav.addBackArrow();
         loadUserList();
     }
 
@@ -110,8 +119,12 @@ public class UserList extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof onUserClickListener)
+        if (context instanceof onUserClickListener) {
             mListener = (onUserClickListener) context;
+        }
+        if (context instanceof IToolBarNavigation) {
+            mToolBarNav = (IToolBarNavigation) context;
+        }
     }
 
     @Override
@@ -129,7 +142,7 @@ public class UserList extends Fragment {
 
         @Override
         public void onBindViewHolder(UserViewHolder holder, int position) {
-            holder.userName.setText((1 + position) + ". " + mUserList.get(position).getUserID()); //TODO : change id to name
+            holder.userName.setText((1 + position) + ". " + mUserList.get(position).getEmail()); //TODO : change email to name
             holder.lastModified.setText(mUserList.get(position).getLastModified());
         }
 

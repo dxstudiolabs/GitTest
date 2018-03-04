@@ -5,7 +5,7 @@
 
     <group
         android:id="@+id/grp1"
-        android:checkableBehavior="single">
+        android:checkableBehavior="none">
         <item
             android:id="@+id/nav_home"
             android:title="Home" />
@@ -15,7 +15,7 @@
     </group>
     <group
         android:id="@+id/grp2"
-        android:checkableBehavior="single">
+        android:checkableBehavior="none">
         <item
             android:id="@+id/nav_user_details"
             android:title="User Details" />
