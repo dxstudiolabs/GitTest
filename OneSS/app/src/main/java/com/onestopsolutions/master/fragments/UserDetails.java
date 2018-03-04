@@ -7,8 +7,9 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.onestopsolutions.master.MainActivity;
 import com.onestopsolutions.master.R;
 import com.onestopsolutions.master.bean.Order;
 import com.onestopsolutions.master.frameworks.IToolBarNavigation;
@@ -26,6 +26,7 @@ import com.onestopsolutions.master.frameworks.retrofit.ResponseResolver;
 import com.onestopsolutions.master.frameworks.retrofit.RestError;
 import com.onestopsolutions.master.frameworks.retrofit.WebServicesWrapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Response;
@@ -36,10 +37,12 @@ public class UserDetails extends Fragment {
     // TODO: Rename and change types of parameters
     private String mUserId;
     private String mParam2;
-    private TextView mUserName, mLastModified, mBookName, mBookType, mOrderId, mOrderStatus;
+
     private final String orderStatus[] = {"Pending", "Complete", "Canceled"};
     private ProgressBar mProgressView;
     private IToolBarNavigation mToolbarNav;
+    private ArrayList<Order> mOrderList;
+    private OrderDetailsAdapter mAdapter;
 
     public UserDetails() {
     }
@@ -85,14 +88,13 @@ public class UserDetails extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_user_details, container, false);
-        mUserName = view.findViewById(R.id.card_user_name);
-        mLastModified = view.findViewById(R.id.card_date_modified);
-        mBookName = view.findViewById(R.id.card_book_name);
-        mBookType = view.findViewById(R.id.card_book_type);
-        mOrderId = view.findViewById(R.id.card_order_id);
-        mOrderStatus = view.findViewById(R.id.card_order_status);
+        RecyclerView rootView = view.findViewById(R.id.order_details_container);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        rootView.setLayoutManager(layoutManager);
+        mAdapter = new OrderDetailsAdapter();
+        rootView.setAdapter(mAdapter);
+        rootView.setItemAnimator(new DefaultItemAnimator());
         mProgressView = view.findViewById(R.id.loading_progress);
-
         return view;
     }
 
@@ -107,7 +109,6 @@ public class UserDetails extends Fragment {
         super.onStart();
         getActivity().setTitle("User Details");
         mToolbarNav.addBackArrow();
-        showProgress(true);
         loadUserInfo();
     }
 
@@ -117,18 +118,12 @@ public class UserDetails extends Fragment {
     }
 
     private void loadUserInfo() {
+        showProgress(true);
         WebServicesWrapper.getInstance().getOrdersForUser(mUserId, new ResponseResolver<List<Order>>() {
             @Override
             public void onSuccess(List<Order> orders, Response response) {
-                if (orders.size() > 0) {
-                    Order order = orders.get(0);
-                    mUserName.setText(orders.get(0).getUserID());
-                    mLastModified.setText(order.getOrderDate());
-                    mBookName.setText(order.getBookName());
-                    mBookType.setText(order.getBookType());
-                    mOrderId.setText(order.getOrderID());
-                    mOrderStatus.setText(orderStatus[order.getOrderStatus()]);
-                }
+                mOrderList = new ArrayList<>(orders);
+                mAdapter.notifyDataSetChanged();
                 showProgress(false);
             }
 
@@ -155,4 +150,47 @@ public class UserDetails extends Fragment {
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
         }
     }
+
+
+    class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsViewHolder> {
+
+        @Override
+        public OrderDetailsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_order_details, parent, false);
+            return new OrderDetailsViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(OrderDetailsViewHolder holder, int position) {
+            Order order = mOrderList.get(position);
+            holder.mUserName.setText(order.getUserID());
+            holder.mLastModified.setText(order.getOrderDate());
+            holder.mBookName.setText(order.getBookName());
+            holder.mBookType.setText(order.getBookType());
+            holder.mOrderId.setText(order.getOrderID());
+            holder.mOrderStatus.setText(orderStatus[order.getOrderStatus()]);
+        }
+
+        @Override
+        public int getItemCount() {
+            if (mOrderList != null) return mOrderList.size();
+            return 0;
+        }
+    }
+
+    private class OrderDetailsViewHolder extends RecyclerView.ViewHolder {
+        private TextView mUserName, mLastModified, mBookName, mBookType, mOrderId, mOrderStatus;
+
+        public OrderDetailsViewHolder(View itemView) {
+            super(itemView);
+            mUserName = itemView.findViewById(R.id.card_user_name);
+            mLastModified = itemView.findViewById(R.id.card_date_modified);
+            mBookName = itemView.findViewById(R.id.card_book_name);
+            mBookType = itemView.findViewById(R.id.card_book_type);
+            mOrderId = itemView.findViewById(R.id.card_order_id);
+            mOrderStatus = itemView.findViewById(R.id.card_order_status);
+        }
+    }
+
 }
