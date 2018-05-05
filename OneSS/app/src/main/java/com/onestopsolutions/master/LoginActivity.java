@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -73,30 +72,25 @@ public class LoginActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
         // Check for a valid password, if the user entered one.
-/*        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
+        if (TextUtils.isEmpty(password) ) {
+            mPasswordView.setError(getString(R.string.error_field_required));
             focusView = mPasswordView;
             cancel = true;
         }
         // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
+        if (TextUtils.isEmpty(email) ) {
             mUserNameView.setError(getString(R.string.error_field_required));
             focusView = mUserNameView;
             cancel = true;
-        } *//*else if (!validateMobileNumber(email)) {
-            mUserNameView.setError(getString(R.string.error_invalid_email));
-            focusView = mUserNameView;
-            cancel = true;
-        }*//*
+        }
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
-        } else*/
-        {
+        } else {
             LoginRequest request = new LoginRequest();
-            request.setUserId("sarshar09");
-            request.setPassword("author@123");
+            request.setUserId(email);
+            request.setPassword(password);
             WebServicesWrapper.getInstance().login(request, new ResponseResolver<LoginResponse>() {
                 @Override
                 public void onSuccess(LoginResponse loginResponse, Response response) {
