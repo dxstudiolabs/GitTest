@@ -15,10 +15,13 @@ import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.http.PartMap;
+
 public class RetrofitConverter extends Converter.Factory {
+    static final String TAG = "RetrofitConverter";
 
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations,
                                                             Retrofit retrofit) {
+        Log.d(TAG,"responseBodyConverter");
         if (type == String.class) {
             return StringResponseConverter.INSTANCE;
         }
@@ -27,6 +30,7 @@ public class RetrofitConverter extends Converter.Factory {
 
     public Converter<?, RequestBody> requestBodyConverter(Type type, Annotation[] parameterAnnotations,
                                                           Annotation[] methodAnnotations, Retrofit retrofit) {
+        Log.d(TAG,"requestBodyConverter");
         if (type == String.class && parameterAnnotations.length > 0 &&
                 parameterAnnotations[0].annotationType() == PartMap.class)
             return StringRequestConverterMultipart.INSTANCE;
@@ -45,10 +49,11 @@ public class RetrofitConverter extends Converter.Factory {
 
         @Override
         public RequestBody convert(File file) throws IOException {
-            Log.v("", "FileRequestConverter " + file);
+            Log.v(TAG, "FileRequestConverter " + file);
             return RequestBody.create(MEDIA_TYPE_IMAGE, file);
         }
     }
+
     private static class StringRequestConverter implements Converter<String, RequestBody> {
 
 
@@ -57,7 +62,7 @@ public class RetrofitConverter extends Converter.Factory {
 
         @Override
         public RequestBody convert(String value) throws IOException {
-            Log.v("", "StringRequestConverter " + value);
+            Log.v(TAG, "StringRequestConverter " + value);
             RequestBody fileBody = null;
             try {
                 fileBody = RequestBody.create(MEDIA_TYPE_JSON, value.getBytes("UTF-8"));
@@ -75,7 +80,7 @@ public class RetrofitConverter extends Converter.Factory {
 
         @Override
         public RequestBody convert(String value) throws IOException {
-            Log.v("", "StringRequestConverter " + value);
+            Log.v(TAG, "StringRequestConverter " + value);
             RequestBody fileBody = null;
             try {
                 fileBody = RequestBody.create(MEDIA_TYPE_MULTIPART, value.getBytes("UTF-8"));
@@ -92,7 +97,7 @@ public class RetrofitConverter extends Converter.Factory {
         @Override
         public String convert(ResponseBody value) throws IOException {
             String output = new String(value.bytes());
-            Log.v("", "StringResponseConverter " + output);
+            Log.v(TAG, "StringResponseConverter " + output);
             return output;
         }
     }

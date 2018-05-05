@@ -175,6 +175,7 @@
                     android:textColor="@color/colorPrimary" />
             </RelativeLayout>
 
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/divider_height"
@@ -213,6 +214,50 @@
                     android:layout_alignEnd="@id/title_subject"
                     android:layout_alignStart="@id/title_subject"
                     android:layout_below="@id/title_subject"
+                    android:layout_marginStart="@dimen/margin_summary_text"
+                    android:text="English"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/colorPrimary" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:layout_marginEnd="@dimen/divider_margin_end"
+                android:layout_marginStart="@dimen/divider_margin_start"
+                android:background="@android:color/darker_gray" />
+
+            <RelativeLayout
+                android:id="@+id/container_book_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <ImageView
+                    android:id="@+id/icon_bookName"
+                    android:layout_width="@dimen/icon_size"
+                    android:layout_height="@dimen/icon_size"
+                    android:layout_margin="@dimen/icon_margin"
+                    android:layout_marginTop="@dimen/icon_padding"
+                    android:src="@drawable/ic_subject" />
+
+                <TextView
+                    android:id="@+id/title_book_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/icon_margin"
+                    android:layout_toEndOf="@id/icon_bookName"
+                    android:gravity="center_vertical"
+                    android:text="@string/text_book_name_title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                <TextView
+                    android:id="@+id/bookName_summary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@id/title_book_name"
+                    android:layout_alignStart="@id/title_book_name"
+                    android:layout_below="@id/title_book_name"
                     android:layout_marginStart="@dimen/margin_summary_text"
                     android:text="English-1st"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"

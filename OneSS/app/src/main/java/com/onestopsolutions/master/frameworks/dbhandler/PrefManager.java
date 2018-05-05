@@ -31,6 +31,7 @@ public class PrefManager {
     public static String PREF_KEY_GRAPH_VIEW = "pref_key_graph_view";
     public static String PREF_KEY_SUBJECT_NAME = "pref_key_subject_name";
     public static String PREF_KEY_BOOK_TYPE = "pref_key_book_type";
+    public static String PREF_KEY_BOOK_NAME = "pref_key_book_name";
     protected static PrefManager mManager;
 
     private PrefManager(Context context) {
@@ -72,7 +73,11 @@ public class PrefManager {
     }
 
     public String getSubjectName() {
-        return getString(PREF_KEY_SUBJECT_NAME, "");
+        return getString(PREF_KEY_SUBJECT_NAME, "English");
+    }
+
+    public String getBookName() {
+        return getString(PREF_KEY_BOOK_NAME, "");
     }
 
     public String getBookType() {

@@ -38,4 +38,5 @@
     <string name="text_book_name_title">Book Name</string>
     <string name="text_book_id_title">Order ID</string>
     <string name="text_order_status_title">Order Status</string>
+    <string name="text_bookName_title">Book Name</string>
 </resources>

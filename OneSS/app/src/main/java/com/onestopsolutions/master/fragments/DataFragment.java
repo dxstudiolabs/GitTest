@@ -1,16 +1,17 @@
 package com.onestopsolutions.master.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -173,6 +174,7 @@ public class DataFragment extends Fragment {
         });
     }
 
+    @SuppressLint("NewApi")
     private void showGraph(BarDataSet barDataSet) {
         mChart = new BarChart(mContext);
         mGraphLayout.removeAllViews();
@@ -189,6 +191,8 @@ public class DataFragment extends Fragment {
         mChart.getAxisLeft().setAxisMinimum(0);
         mChart.setFitBars(true);
         mChart.setDescription(null);
+        mChart.animateX(500, Easing.EasingOption.Linear);
+        mChart.setContextClickable(false);
         mChart.invalidate();
     }
 
